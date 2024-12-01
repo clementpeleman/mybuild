@@ -30,6 +30,10 @@ import { getServerSideURL } from '@/utilities/getURL'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: 'Update',
+    plural: 'Updates',
+  },
   access: {
     create: authenticated,
     delete: authenticated,
