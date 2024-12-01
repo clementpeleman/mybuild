@@ -20,7 +20,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
       className="relative -mt-[10.4rem] flex items-end justify-start text-white"
       data-theme="dark"
     >
-      <div className=" backdrop-blur-md p-16 z-10 relative flex items-center justify-center">
+      <div className=" backdrop-blur-md md:p-16 z-10 relative flex items-center justify-center">
         <div className="max-w-[36.5rem] text-left">
           {richText && (
             <RichText className="mb-6" content={richText} enableGutter={false} enableProse={true} />
