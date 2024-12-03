@@ -9,24 +9,19 @@ import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
-  const { setHeaderTheme } = useHeaderTheme()
-
-  useEffect(() => {
-    setHeaderTheme('dark')
-  })
 
   return (
     <div
-      className="relative -mt-[10.4rem] flex items-end justify-start text-white"
+      className="relative -mt-[4rem] flex items-end justify-start text-white"
       data-theme="dark"
     >
-      <div className=" backdrop-blur-md px-2 pt-2 pb-6 md:mb-0 md:p-16 z-10 relative flex items-center justify-center">
-        <div className="max-w-[36.5rem] text-left">
+      <div className=" backdrop-blur-md px-2 pt-2 sm:pt-0 pb-4 sm:pb-2 md:px-6 md:mb-0 z-10 relative flex items-center justify-center">
+        <div className="md:flex text-left">
           {richText && (
-            <RichText className="mb-6" content={richText} enableGutter={false} enableProse={true} />
+            <RichText className="" content={richText} enableGutter={false} enableProse={true} />
           )}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex justify-start gap-4">
+            <ul className="flex justify-start mt-4 md:ml-8 pt-1 items-start gap-4">
               {links.map(({ link }, i) => {
                 return (
                   <li key={i}>

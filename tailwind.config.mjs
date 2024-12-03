@@ -112,7 +112,7 @@ export default {
             h1: {
               fontSize: '4rem',
               fontWeight: 'normal',
-              marginBottom: '0.25em',
+              marginBottom: '0',
             },
           },
         },
