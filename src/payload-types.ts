@@ -119,7 +119,7 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | EmbedBlock | FormBlock)[];
   meta?: {
     title?: string | null;
     image?: (number | null) | Media;
@@ -421,6 +421,16 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock".
+ */
+export interface EmbedBlock {
+  embedUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'embedBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -858,6 +868,13 @@ export interface PagesSelect<T extends boolean = true> {
               categories?: T;
               limit?: T;
               selectedDocs?: T;
+              id?: T;
+              blockName?: T;
+            };
+        embedBlock?:
+          | T
+          | {
+              embedUrl?: T;
               id?: T;
               blockName?: T;
             };
