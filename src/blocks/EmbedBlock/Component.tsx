@@ -24,7 +24,7 @@ export const EmbedBlock: React.FC<EmbedBlockProps> = ({
       )}
     >
       {/* Gebruik de externe IframeComponent */}
-      <Iframe fill={true} embedUrl={embedUrl} />
+      <Iframe fill={true} embedUrl={embedUrl} className=''/>
     </div>
   );
 };

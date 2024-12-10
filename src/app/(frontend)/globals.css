@@ -112,3 +112,7 @@ html[data-theme='light'] {
   margin-top: 0; /* Of een andere waarde die je wilt */
 }
 
+.prose h2{
+  margin-bottom: 0.5em;
+}
+

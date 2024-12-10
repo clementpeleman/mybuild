@@ -27,14 +27,16 @@ const Iframe: React.FC<IframeProps> = ({
     .join(', ')
 
   return (
-    <iframe
-      src={embedUrl}
-      width={fill ? '100%' : width}
-      height={'600'}
-      className={className}
-    //   sizes={sizes}
-      allowFullScreen
-    />
+    <div className='overscroll-contain overflow-hidden -mt-10'>
+        <iframe
+        src={embedUrl}
+        width={fill ? '100%' : width}
+        height={'600'}
+        className={className}
+        //   sizes={sizes}
+        allowFullScreen
+        />
+    </div>
   )
 }
 
