@@ -116,3 +116,8 @@ html[data-theme='light'] {
   margin-bottom: 0.5em;
 }
 
+@media (min-width: 768px) { /* md */
+  h1 {
+    line-height: 1; /* Lijnhoogte voor md en groter */
+  }
+}
