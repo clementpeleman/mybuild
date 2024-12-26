@@ -38,7 +38,7 @@ export const home: RequiredDataFromCollectionSlug<'pages'> = {
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Payload Website Template',
+                text: 'MyBuild',
                 version: 1,
               },
             ],
@@ -80,7 +80,7 @@ export const home: RequiredDataFromCollectionSlug<'pages'> = {
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: " to begin managing this site's content. The code for this template is completely open-source and can be found ",
+                text: " to begin managing this site's content. ",
                 version: 1,
               },
               {

@@ -20,7 +20,7 @@ export const homeStatic: Page = {
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Payload Website Template',
+                text: 'MyBuild',
                 version: 1,
               },
             ],
@@ -81,8 +81,8 @@ export const homeStatic: Page = {
     },
   },
   meta: {
-    description: 'An open-source website built with Payload and Next.js.',
-    title: 'Payload Website Template',
+    description: 'An interactive construction update visualization page',
+    title: 'MyBuild',
   },
   title: 'Home',
 }

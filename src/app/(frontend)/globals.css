@@ -121,3 +121,7 @@ html[data-theme='light'] {
     line-height: 1; /* Lijnhoogte voor md en groter */
   }
 }
+
+.text-4xl{
+  font-size: 2.5rem;
+} 
