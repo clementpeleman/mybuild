@@ -21,6 +21,12 @@ export const Users: CollectionConfig = {
       name: 'name',
       type: 'text',
     },
+    {
+      name: 'isStaff',
+      type: 'checkbox',
+      label: 'Medewerker (volledige toegang tot alle werven)',
+      defaultValue: false,
+    },
   ],
   timestamps: true,
 }

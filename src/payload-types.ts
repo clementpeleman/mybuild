@@ -13,6 +13,8 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    projects: Project;
+    flights: Flight;
     media: Media;
     categories: Category;
     users: User;
@@ -28,6 +30,8 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    flights: FlightsSelect<false> | FlightsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -411,6 +415,7 @@ export interface Post {
 export interface User {
   id: number;
   name?: string | null;
+  isStaff?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -624,6 +629,58 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  name: string;
+  client?: string | null;
+  status?: ('prep' | 'active' | 'done') | null;
+  address?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  startDate?: string | null;
+  coverImage?: (number | null) | Media;
+  description?: string | null;
+  allowedUsers?: (number | User)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flights".
+ */
+export interface Flight {
+  id: number;
+  project: number | Project;
+  date: string;
+  title?: string | null;
+  summary?: string | null;
+  orthoUrl?: string | null;
+  modelUrl?: string | null;
+  pointcloudUrl?: string | null;
+  measurements?:
+    | {
+        label?: string | null;
+        value?: number | null;
+        unit?: string | null;
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  gallery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -704,6 +761,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'flights';
+        value: number | Flight;
       } | null)
     | ({
         relationTo: 'media';
@@ -934,6 +999,56 @@ export interface PostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  name?: T;
+  client?: T;
+  status?: T;
+  address?: T;
+  lat?: T;
+  lng?: T;
+  startDate?: T;
+  coverImage?: T;
+  description?: T;
+  allowedUsers?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "flights_select".
+ */
+export interface FlightsSelect<T extends boolean = true> {
+  project?: T;
+  date?: T;
+  title?: T;
+  summary?: T;
+  orthoUrl?: T;
+  modelUrl?: T;
+  pointcloudUrl?: T;
+  measurements?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        unit?: T;
+        note?: T;
+        id?: T;
+      };
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1039,6 +1154,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  isStaff?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
