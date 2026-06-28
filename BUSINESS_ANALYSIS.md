@@ -201,3 +201,126 @@ markt, pijplijn én prijszetting in één beweging.
 
 > Opmerking: regelgeving en prijzen zijn indicatief (kennis tot begin 2026). Verifieer de
 > exacte DGLV-vereisten en verzekeringskosten vóór je start.
+
+---
+
+## 9. Technische workflow met de DJI Mini 3 Pro
+
+### 9.0 Twee bepalende eigenschappen van de Mini 3 Pro
+- **<250 g (C0) = regelgevingsvoordeel.** Open categorie **A1**: geen verplicht examen,
+  geen Remote ID. Enkel **operatorregistratie** bij DGLV (want camera). Dit schrapt het
+  zwaarste obstakel uit §4b. ✅
+- **Geen automatische mapping-missies.** DroneDeploy/Pix4D/WaypointMap ondersteunen de
+  Mini 3 Pro **niet** (virtual-stick only, geen DJI MSDK). Automatisch grid-vliegen kan
+  pas vanaf de **Mini 4 Pro**. → De vlucht moet **manueel** en gestandaardiseerd. ⚠️
+  Dit ondermijnt deels de "telkens exact dezelfde vlucht" en is je belangrijkste
+  upgrade-trigger.
+
+### 9.1 Vluchtparameters (vast vastleggen per werf)
+| Parameter | Richtwaarde | Waarom |
+|---|---|---|
+| Hoogte (AGL) | 60–80 m | GSD ~1,5–2 cm/px; balans detail/coverage |
+| Frontale overlap | 75–80 % | Nodig voor robuuste fotogrammetrie |
+| Zijdelingse overlap | 65–70 % | Idem |
+| Snelheid | 3–5 m/s | Beperkt motion blur (rolling shutter) |
+| Camera (ortho) | nadir (recht omlaag) | Orthomosaic + DSM |
+| Camera (3D) | extra oblique passes ~45° + orbit | Gevels/3D-mesh |
+| Opname | interval (timed shot ~2 s) | Continue dekking tijdens manuele baan |
+| Instellingen | **manueel** ISO/sluiter/witbalans vast | Consistente kleur over vluchten |
+
+### 9.2 Herhaalbaarheid borgen (kritisch zonder auto-missie)
+- **Vast opstijgpunt** (markeer fysiek), vaste hoogte, zelfde "grasmaaier"-patroon.
+- Vlieg waar mogelijk op **hetzelfde tijdstip/lichtval** en bij gelijkaardig weer.
+- Documenteer de route (screenshot/schets) als herbruikbaar draaiboek per werf.
+- **GCP's = de echte ankering.** Plaats 4–6 schaakbord-targets, één keer ingemeten in
+  **Lambert 72 (EPSG:31370)** (RTK-rover of landmeter). Daarmee liggen álle latere
+  vluchten in hetzelfde stelsel — dit compenseert het ontbreken van RTK en is verplicht
+  als je betrouwbare **volumemetingen** wil. Voor louter visuele voortgang mag het weg.
+
+### 9.3 De pijplijn (per vlucht)
+```
+1. VLIEGEN      DJI Fly · manuele grid + interval-opname · evt. oblique orbit
+                  └─ 1 batterij ≈ 30 min → meerdere batterijen voor grote werven
+2. OFFLOAD      SD-kaart → JPEG (+ evt. DNG/RAW), GPS-EXIF aanwezig
+3. VERWERKEN    WebODM (OpenDroneMap, zelf-gehost, gratis)  ← MVP-keuze
+                  of Pix4Dmatic / Agisoft Metashape (betaald)
+                  + GCP's importeren → ~30–90 min (GPU helpt)
+                  OUTPUT: orthomosaic (GeoTIFF) · DSM/DTM · point cloud (LAS/LAZ)
+                          · 3D textured mesh (OBJ/glTF)
+4. WEB-KLAAR    Point cloud → PotreeConverter → Potree-viewer (statische HTML)
+                Orthomosaic → gdal2tiles → Leaflet/OpenLayers tilelayer
+                3D mesh    → Sketchfab (gratis, iframe) of self-host three.js/glTF
+5. PUBLICEREN   Iframe-URL → MyBuild EmbedBlock op de werfpagina
+                  └─ datum/versie per vlucht · toegang delen (Payload Users/access)
+                  └─ optioneel: before/after-slider, metingen, voortgangsnotities
+```
+
+### 9.4 Stack-keuze (MVP, maximale marge)
+- **Verwerking:** WebODM zelf-gehost (gratis, open source) — houdt verwerking in eigen hand.
+- **Hosting viewers:** Potree + gdal2tiles zelf-gehost; Sketchfab gratis tier voor 3D.
+- **Portaal:** MyBuild (Payload + Next.js, Vercel) — bestaat al, incl. EmbedBlock.
+- Geen enkel betaald platform strikt nodig voor de MVP → kosten blijven minimaal.
+
+### 9.5 Upgrade-pad (wanneer de Mini 3 Pro knelt)
+- **Mini 4 Pro** (nog steeds <250 g): wél automatische mapping-missies + DroneDeploy-
+  support → herhaalbaarheid + efficiëntie, mét behoud van het A1-regelgevingsvoordeel.
+  Dit is de logische eerste upgrade.
+- **Mavic 3 Enterprise (RTK)**: mechanische sluiter + RTK → survey-grade nauwkeurigheid
+  zonder/met minder GCP's, maar >250 g → zwaardere regelgeving (terug richting §4b).
+- Trigger: zodra je structureel **metingen** verkoopt of het manuele vliegen je tijd opeet.
+
+---
+
+## 10. Financieel model & prijszetting
+
+> Alle bedragen zijn **illustratieve aannames** (België, EUR, begin 2026). Vervang ze door
+> je eigen cijfers; het model telt, niet de exacte getallen.
+
+### 10.1 Kosten
+**Eenmalig (CAPEX)** — grotendeels al gedekt:
+- DJI Mini 3 Pro: ~€700–900 (al in bezit) · extra batterijen/SD: ~€150
+- GCP-targets: ~€100 · laptop met degelijke GPU voor WebODM: bestaand
+- (optioneel) RTK-rover of eenmalige landmeter-inmeting per werf: variabel
+
+**Vast / maand (OPEX):**
+- Hosting (Vercel + opslag): ~€20–50 · domein: verwaarloosbaar
+- BA-luchtvaartverzekering: ~€100–300/jaar (≈ €10–25/maand) — **verifiëren**
+- Software: WebODM gratis · Sketchfab gratis tier → ~€0
+- **Totaal vast: ~€40–75/maand**
+
+**Variabel / vlucht:** reistijd + ~1 u vliegen + ~1–2 u verwerken/publiceren ≈ **3–4 u arbeid**.
+
+### 10.2 Prijsmodel (recurring per werf)
+| Component | Voorstel |
+|---|---|
+| **Setup / 0-meting** (eenmalig) | €250–500 (GCP's, eerste model, portaal opzetten) |
+| **Maandabonnement / werf** | €300–600 (1 vlucht + verwerking + portaal + hosting) |
+| Hogere frequentie (wekelijks) | × factor of meerprijs |
+| **Volumemetingen** (grondverzet/stock) | + €100–250 per meting — hoogste betalingsbereidheid |
+| 3D-mesh / oblique model | meerprijs |
+| Korting | bij meerdere werven of jaarcontract |
+
+### 10.3 Rekenvoorbeeld (aannames gelabeld)
+Aanname: **€450/werf/maand**, 1 vlucht/maand, ~3,5 u arbeid/bezoek, vaste kosten ~€60/maand.
+
+| Scenario | Omzet/maand | Arbeid/maand | Bruto-uurloon* |
+|---|---|---|---|
+| 1 werf (45 min rijden) | €450 | ~4 u | ~€110/u |
+| 5 werven, geclusterd | €2.250 | ~17–20 u | ~€115–130/u |
+| 10 werven, 2 zones, gedeelde ritten | €4.500 | ~30–35 u | ~€130–150/u |
+
+\* indicatief, vóór belasting; reistijd gedeeld bij clustering drijft het uurloon omhoog.
+
+- **Break-even:** 1–2 werven dekken alle vaste kosten + de (al gemaakte) hardware binnen
+  enkele maanden. Het risico is dus laag.
+- **Dominante kostfactor = reistijd.** Eén losse werf ver weg is marginaal; **3+ werven in
+  dezelfde zone op één dag** verdubbelt je effectieve uurloon. → Verkoop per regio.
+- **Hoogste marge-hefboom:** geclusterde werven + zelf-gehoste verwerking (geen platform-
+  abonnement) + recurring (geen reacquisitiekost).
+
+### 10.4 Wat dit zegt over het model
+Het is een **tijd-voor-geld dienst** met gezonde marge en laag opstartrisico, begrensd door
+reistijd en het manuele vliegen (Mini 3 Pro). Het schaalt op twee manieren: **geografisch
+clusteren** (nu) en **automatiseren/uitbesteden van vluchten** (na upgrade naar Mini 4 Pro
+of een pilotennetwerk). De volumemetingen zijn de feature met de hoogste betalingsbereidheid
+en verdienen prioriteit zodra de basis draait.
